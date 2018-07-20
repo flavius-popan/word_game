@@ -113,8 +113,12 @@ def is_anagram(scrambled_puzzle: str, solution: str) -> bool:
     answer_list = list(solution)
     answer_list.sort()
 
+    if len(scrambled_puzzle) == len(solution):
+        same = True
+    else:
+        return False
+
     i = 0
-    same = True
     while i < len(scrambled_puzzle) and same:
         if answer_list[i] == puzzle_list[i]:  # Compare letters at each index after sorting
             i += 1

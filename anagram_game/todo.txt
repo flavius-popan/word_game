@@ -1,0 +1,2 @@
+TESTS!
+Make sure scrambled word isn't already a completed word
