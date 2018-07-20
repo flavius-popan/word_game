@@ -1,0 +1,6 @@
+
+\.idea/
+
+anagram_game/\.DS_Store
+
+anagram_game/__pycache__/
