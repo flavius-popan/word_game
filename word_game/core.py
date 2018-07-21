@@ -1,10 +1,3 @@
-"""
-Author: Flavius Popan
-Email: flaviuspopan@gmail.com
-Reviewer: pixelmonkey
-Date: July 20, 2018
-"""
-
 from itertools import permutations
 from random import choice, shuffle
 

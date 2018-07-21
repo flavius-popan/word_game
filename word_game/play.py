@@ -2,7 +2,7 @@ import datetime as dt
 import sys
 from subprocess import call
 
-from anagram_game.core import generate_puzzle, is_anagram, solve
+from word_game.core import generate_puzzle, is_anagram, solve
 
 MAX_LEVELS = 3
 

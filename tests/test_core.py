@@ -1,6 +1,6 @@
 import unittest
 
-from anagram_game.core import *
+from word_game.core import *
 
 
 class TestGetRandomWord(unittest.TestCase):

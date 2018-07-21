@@ -1,6 +1,6 @@
 
 \.idea/
 
-anagram_game/\.DS_Store
+word_game/\.DS_Store
 
-anagram_game/__pycache__/
+word_game/__pycache__/
