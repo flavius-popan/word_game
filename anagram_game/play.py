@@ -2,7 +2,9 @@ import datetime as dt
 import sys
 from subprocess import call
 
-from .core import generate_puzzle, is_anagram, solve
+from anagram_game.core import generate_puzzle, is_anagram, solve
+
+MAX_LEVELS = 3
 
 level = 1
 player = None
@@ -22,16 +24,21 @@ def draw_header():
         return "{:02}:{:02}".format(*time_tuple)
 
     clear()
-    header = "Name: {0} | Level: {1} | Time: {2}".format(player, level, pretty_time())
+    header = "Name: {0} | Level: {1}/{2} | Time: {3}".format(player,
+                                                             level if level < MAX_LEVELS else MAX_LEVELS,
+                                                             MAX_LEVELS, pretty_time())
     print(header)
-    print('-' * len(header), '\n')
+    print('-' * len(header))
 
 
 def play():
     global level
-    draw_header()
     puzzle = generate_puzzle(difficulty=level, make_solvable=True)
-    while level != 4:
+    guesses = set()
+    while level <= MAX_LEVELS:
+        clear()
+        draw_header()
+        print('Guessed: {0}\n'.format(guesses if len(guesses) > 0 else '') if len(guesses) > 0 else '')
         guess = input('{0} => '.format(puzzle))
         if is_anagram(scrambled_puzzle=puzzle, solution=guess):
             level += 1
@@ -51,19 +58,31 @@ def play():
             print('\tOptions: solve, new/next, restart, exit')
         elif guess == 'skip':
             level += 1
-            play()
+            if level > MAX_LEVELS:
+                break
+            else:
+                play()
         else:
+            guesses.add(guess)
             continue
 
-    print('Congratulations! You win!\n')
-    input("Press any key to restart...")
+    clear()
+    draw_header()
+    print("\nCongratulations, you win!\nPress any key to restart...")
+    input()
+    start()
 
 
 def start():
-    global player, start_time
+    global player, start_time, level
     start_time = dt.datetime.utcnow()
+    level = 1
     clear()
     print("Welcome to Flavius' Super Awesome Anagram Game!\n")
     name = input("What's your name?: ")
     player = name if name else 'Player 1'
     play()
+
+
+if __name__ == '__main__':
+    start()
