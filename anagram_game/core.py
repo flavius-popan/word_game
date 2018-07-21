@@ -13,17 +13,15 @@ LETTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
            'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 RESERVED_WORDS = ['next', 'restart', 'skip', 'exit', 'solve']
 
-WORD_LIST = [word.strip('\n').lower() for word in open("anagram_game/words.txt")]
+MAX_LENGTH = 8
+# Cut WORD_LIST down to max_length, strip newlines, and lower
+WORD_LIST = [word.strip('\n').lower() for word in open("anagram_game/words.txt") if len(word) <= MAX_LENGTH]
 
 
-def get_random_word(max_length: int = 8) -> str:
-    """Return a random word string from the dictionary.
-
-    :param max_length: Longest desired word length, essential for keeping things speedy.
-    """
+def get_random_word() -> str:
+    """Return a random word string from the dictionary."""
     random_word = choice(WORD_LIST)
-    return random_word if len(random_word) <= max_length and random_word not in RESERVED_WORDS else get_random_word(
-        max_length)
+    return random_word if random_word not in RESERVED_WORDS else get_random_word()
 
 
 def calculate_difficulty_rating(word: str) -> int:
