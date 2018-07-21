@@ -34,11 +34,12 @@ def draw_header():
 def play():
     global level
     puzzle = generate_puzzle(difficulty=level, make_solvable=True)
-    guesses = set()
+    guesses = []
     while level <= MAX_LEVELS:
         clear()
         draw_header()
-        print('Guessed: {0}\n'.format(guesses if len(guesses) > 0 else '') if len(guesses) > 0 else '')
+        print('Guessed: {0}\n'.format(sorted(list(set(guesses))) if len(guesses) > 0 else '') if len(
+            guesses) > 0 else '')
         guess = input('{0} => '.format(puzzle))
         if is_anagram(scrambled_puzzle=puzzle, solution=guess):
             level += 1
@@ -63,7 +64,7 @@ def play():
             else:
                 play()
         else:
-            guesses.add(guess)
+            guesses.append(guess)
             continue
 
     clear()

@@ -1,3 +1,1 @@
 README
-Redo difficulty scoring
-Refresh timer on incorrect guess
