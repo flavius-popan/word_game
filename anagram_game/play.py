@@ -56,7 +56,10 @@ def play():
         elif guess == 'restart':
             start()
         elif guess == 'help':
-            print('\tOptions: solve, new/next, restart, exit')
+            print('\nOptions: solve - show solutions\n\t new/next - generate a new puzzle on the same level\n\t'
+                  ' restart - restart the whole game\n\t exit - quit the game\n\n\t Press any key to continue...')
+            input()
+            continue
         elif guess == 'skip':
             level += 1
             if level > MAX_LEVELS:
@@ -71,6 +74,7 @@ def play():
     draw_header()
     print("\nCongratulations, you win!\nPress any key to restart...")
     input()
+    # TODO: Add data writer
     start()
 
 
@@ -79,9 +83,11 @@ def start():
     start_time = dt.datetime.utcnow()
     level = 1
     clear()
-    print("Welcome to Flavius' Super Awesome Anagram Game!\n")
+    print("Welcome to the Anagram Game!\n")
     name = input("What's your name?: ")
     player = name if name else 'Player 1'
+    perfection_ans = input("Are you a perfectionist? [Y or N]: ")
+    perfection_ans.lower()
     play()
 
 

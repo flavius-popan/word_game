@@ -1,1 +1,2 @@
 README
+Introduce intractable puzzles
