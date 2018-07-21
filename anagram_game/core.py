@@ -5,13 +5,13 @@ Reviewer: pixelmonkey
 Date: July 20, 2018
 """
 
-from collections import Counter
 from itertools import permutations
 from random import choice, shuffle
 
 VOWELS = ['a', 'e', 'i', 'o', 'u']
 LETTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
            'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+RESERVED_WORDS = ['next', 'restart', 'skip', 'exit', 'solve']
 
 WORD_LIST = [word.strip('\n').lower() for word in open("anagram_game/words.txt")]
 
@@ -22,7 +22,8 @@ def get_random_word(max_length: int = 8) -> str:
     :param max_length: Longest desired word length, essential for keeping things speedy.
     """
     random_word = choice(WORD_LIST)
-    return random_word if len(random_word) <= max_length else get_random_word(max_length)
+    return random_word if len(random_word) <= max_length and random_word not in RESERVED_WORDS else get_random_word(
+        max_length)
 
 
 def calculate_difficulty_rating(word: str) -> int:
@@ -30,35 +31,38 @@ def calculate_difficulty_rating(word: str) -> int:
 
     :param word: Can be any random string, either the word or the scrambled anagram.
     """
-    difficulty = 0
+    difficulty = 1
     word = word.lower()
     word_length = len(word)
 
-    # Calculate the ratio of vowels to consonants in a range of 0.0 (no vowels) to 1.0 (all vowels)
-    vowels_ratio = sum([Counter(word)[letter] for letter in VOWELS]) / len(word)
-
-    if word_length <= 5:
-        difficulty += 1
-    else:
-        difficulty += 2
+    if word_length < 4:
+        difficulty = 1
+    elif 4 <= word_length <= 5:
+        difficulty = 2
+    elif word_length > 5:
+        difficulty = 3
 
     # I'm making an untested assumption that more vowels makes this easier. Hope its true ¯\_(ツ)_/¯
-    if vowels_ratio <= 0.5:
-        difficulty += 1
-    elif vowels_ratio > 0.5:
-        difficulty -= 1
+    # Calculate the ratio of vowels to consonants in a range of 0.0 (no vowels) to 1.0 (all vowels)
+    # vowels_ratio = sum([Counter(word)[letter] for letter in VOWELS]) / len(word)
+    # if vowels_ratio <= 0.5:
+    #     difficulty += 1
+    # elif vowels_ratio > 0.5:
+    #     difficulty -= 1
 
     return difficulty
 
 
-def generate_puzzle(difficulty: int=2, make_solvable: bool=True) -> str:
+def generate_puzzle(difficulty: int = 1, make_solvable: bool = True) -> str:
     """Selects a word from the dictionary, shuffles it, and returns it as a string.
 
-    :param difficulty: 0=Trivial, 1=Easy, 2=Normal, 3=Hard. Defaults to Normal.
+    :param difficulty: 1=Easy, 2=Normal, 3=Hard. Defaults to Easy.
     :param make_solvable: If set to False, returns a puzzle that cannot be solved. Defaults to True.
     """
 
     def random_replace_letter(letters: list):
+        # TODO: Make sure it has at least one vowel
+        # Replace consonant specifically to keep the word looking legit
         random_index = choice(range(len(letters)))
         letters[random_index] = choice(LETTERS)
         return letters
@@ -74,9 +78,10 @@ def generate_puzzle(difficulty: int=2, make_solvable: bool=True) -> str:
             continue
 
     if make_solvable:
-        return ''.join(word_list)
+        word = ''.join(word_list)
+        # Ensure we're not providing a word that is already in the dict
+        return word if word not in WORD_LIST else generate_puzzle(difficulty, make_solvable)
     else:
-        # TODO: Make sure it has at least one vowel
         bad_puzzle = ''.join(random_replace_letter(word_list))
         return bad_puzzle if not solvable(bad_puzzle) else generate_puzzle(difficulty, make_solvable)
 

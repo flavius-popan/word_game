@@ -1,2 +1,3 @@
-TESTS!
-Make sure scrambled word isn't already a completed word
+README
+Redo difficulty scoring
+Refresh timer on incorrect guess

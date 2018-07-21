@@ -4,8 +4,8 @@ from subprocess import call
 
 from .core import generate_puzzle, is_anagram, solve
 
+level = 1
 player = None
-level = 0
 start_time = None
 
 
@@ -31,7 +31,7 @@ def play():
     global level
     draw_header()
     puzzle = generate_puzzle(difficulty=level, make_solvable=True)
-    while level != 3:
+    while level != 4:
         guess = input('{0} => '.format(puzzle))
         if is_anagram(scrambled_puzzle=puzzle, solution=guess):
             level += 1
@@ -49,8 +49,14 @@ def play():
             start()
         elif guess == 'help':
             print('\tOptions: solve, new/next, restart, exit')
+        elif guess == 'skip':
+            level += 1
+            play()
         else:
             continue
+
+    print('Congratulations! You win!\n')
+    input("Press any key to restart...")
 
 
 def start():
