@@ -8,7 +8,7 @@ RESERVED_WORDS = ['next', 'restart', 'skip', 'exit', 'solve']
 
 MAX_LENGTH = 8
 # Cut WORD_LIST down to max_length, strip newlines, and lower
-WORD_LIST = [word.strip('\n').lower() for word in open("anagram_game/words.txt") if len(word) <= MAX_LENGTH]
+WORD_LIST = [word.strip('\n').lower() for word in open("word_game/words.txt") if len(word) <= MAX_LENGTH]
 
 
 def get_random_word() -> str:
