@@ -12,7 +12,7 @@ WORD_LIST = [word.strip('\n').lower() for word in open("word_game/words.txt") if
 
 
 def get_random_word() -> str:
-    """Return a random word string from the dictionary."""
+    """Return a random (non-reserved) word from the dictionary."""
     random_word = choice(WORD_LIST)
     return random_word if random_word not in RESERVED_WORDS else get_random_word()
 
@@ -33,27 +33,17 @@ def calculate_difficulty_rating(word: str) -> int:
     elif word_length > 5:
         difficulty = 3
 
-    # I'm making an untested assumption that more vowels makes this easier. Hope its true ¯\_(ツ)_/¯
-    # Calculate the ratio of vowels to consonants in a range of 0.0 (no vowels) to 1.0 (all vowels)
-    # vowels_ratio = sum([Counter(word)[letter] for letter in VOWELS]) / len(word)
-    # if vowels_ratio <= 0.5:
-    #     difficulty += 1
-    # elif vowels_ratio > 0.5:
-    #     difficulty -= 1
-
     return difficulty
 
 
-def generate_puzzle(difficulty: int = 1, is_solvable: bool = True) -> str:
+def generate_puzzle(difficulty: int=1, is_solvable: bool=True) -> str:
     """Selects a word from the dictionary, shuffles it, and returns it as a string.
 
     :param difficulty: 1=Easy, 2=Normal, 3=Hard. Defaults to Easy.
     :param is_solvable: If set to False, returns a puzzle that cannot be solved. Defaults to True.
     """
-
     def random_replace_letter(letters: list):
-        # TODO: Make sure it has at least one vowel
-        # Replace consonant specifically to keep the word looking legit
+        # TODO: Replace consonant specifically to keep the word looking legit, ensure it has at least one vowel
         random_index = choice(range(len(letters)))
         letters[random_index] = choice(LETTERS)
         return letters
@@ -82,7 +72,6 @@ def solve(puzzle: str) -> set:
 
     :param puzzle: Any string will do.
     """
-
     def permutation_generator(answer):
         for guess in permutations(answer, len(answer)):
             guess = ''.join(guess)
@@ -95,6 +84,7 @@ def solve(puzzle: str) -> set:
 
 
 def solvable(answer: str) -> bool:
+    # TODO: Return True after first solution is found instead of waiting for all possible anagrams
     return True if solve(answer) else False
 
 
