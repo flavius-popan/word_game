@@ -1,4 +1,4 @@
-!['The Word Game in Action'](misc/word_game.png)
+!['The Word Game in Action'](misc/word_game_lvl3.png)
 
 ## The Game ##
 The Word Game is a test of determination and grit, challenging the user to solve a series of anagram puzzles.
