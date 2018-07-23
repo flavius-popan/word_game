@@ -1,2 +1,5 @@
 README
-Introduce intractable puzzles
+Threaded intractable
+Intractable timer
+Scoreboard
+Persistence

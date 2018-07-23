@@ -10,6 +10,9 @@ level = 1
 player = None
 start_time = None
 
+unsolvable_puzzle = ''
+intractable_presented = False
+
 
 def clear():
     call(["clear"])
@@ -32,15 +35,25 @@ def draw_header():
 
 
 def play():
-    global level
-    puzzle = generate_puzzle(difficulty=level, make_solvable=True)
+    global level, intractable_presented, unsolvable_puzzle
+    # Present an unsolvable puzzle on final level but only once. Can be solved/skipped.
+    if level == MAX_LEVELS and not intractable_presented:
+        intractable_presented = True
+        puzzle = unsolvable_puzzle
+    else:
+        puzzle = generate_puzzle(difficulty=level, is_solvable=True)
     guesses = []
     while level <= MAX_LEVELS:
         clear()
         draw_header()
         print('Guessed: {0}\n'.format(sorted(list(set(guesses))) if len(guesses) > 0 else '') if len(
             guesses) > 0 else '')
+
+        if len(guesses) > 7:
+            print("Stuck? Type 'new' to try another word\n")
+
         guess = input('{0} => '.format(puzzle))
+
         if is_anagram(scrambled_puzzle=puzzle, solution=guess):
             level += 1
             play()
@@ -79,15 +92,16 @@ def play():
 
 
 def start():
-    global player, start_time, level
-    start_time = dt.datetime.utcnow()
-    level = 1
+    global player, start_time, level, unsolvable_puzzle
+    # Pre-generate unsolvable puzzle before game begins
+    unsolvable_puzzle = generate_puzzle(difficulty=3, is_solvable=False)
     clear()
     print("Welcome to the Anagram Game!\n")
     name = input("What's your name?: ")
     player = name if name else 'Player 1'
     perfection_ans = input("Are you a perfectionist? [Y or N]: ")
     perfection_ans.lower()
+    start_time = dt.datetime.utcnow()
     play()
 
 

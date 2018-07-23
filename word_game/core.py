@@ -44,11 +44,11 @@ def calculate_difficulty_rating(word: str) -> int:
     return difficulty
 
 
-def generate_puzzle(difficulty: int = 1, make_solvable: bool = True) -> str:
+def generate_puzzle(difficulty: int = 1, is_solvable: bool = True) -> str:
     """Selects a word from the dictionary, shuffles it, and returns it as a string.
 
     :param difficulty: 1=Easy, 2=Normal, 3=Hard. Defaults to Easy.
-    :param make_solvable: If set to False, returns a puzzle that cannot be solved. Defaults to True.
+    :param is_solvable: If set to False, returns a puzzle that cannot be solved. Defaults to True.
     """
 
     def random_replace_letter(letters: list):
@@ -68,13 +68,13 @@ def generate_puzzle(difficulty: int = 1, make_solvable: bool = True) -> str:
         else:
             continue
 
-    if make_solvable:
+    if is_solvable:
         word = ''.join(word_list)
         # Ensure we're not providing a word that is already in the dict
-        return word if word not in WORD_LIST else generate_puzzle(difficulty, make_solvable)
+        return word if word not in WORD_LIST else generate_puzzle(difficulty, is_solvable)
     else:
         bad_puzzle = ''.join(random_replace_letter(word_list))
-        return bad_puzzle if not solvable(bad_puzzle) else generate_puzzle(difficulty, make_solvable)
+        return bad_puzzle if not solvable(bad_puzzle) else generate_puzzle(difficulty, is_solvable)
 
 
 def solve(puzzle: str) -> set:
