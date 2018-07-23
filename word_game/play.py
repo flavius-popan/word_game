@@ -96,7 +96,7 @@ def start():
     # Pre-generate unsolvable puzzle before game begins
     unsolvable_puzzle = generate_puzzle(difficulty=3, is_solvable=False)
     clear()
-    print("Welcome to the Anagram Game!\n")
+    print("Welcome to the Word Game!\n")
     name = input("What's your name?: ")
     player = name if name else 'Player 1'
     perfection_ans = input("Are you a perfectionist? [Y or N]: ")
